@@ -47,13 +47,14 @@ body{
   overflow:hidden;
 }
 
-.hero-bg{
-  position:absolute;inset:0;
-  background:url('/mnt/user-data/uploads/外観_背景有り_.png') center/cover no-repeat;
-  /* 画像の明度を調整して馴染ませる */
-  filter:brightness(0.5) saturate(0.7);
-  transform:scale(1.05);
-  animation:bgPan 20s ease-in-out infinite alternate;
+/* ヒーローエリアの背景画像設定 */
+.hero-bg {
+  position: absolute; inset: 0;
+  /* 同じフォルダにある画像ファイルを指定 */
+  background: url('hero-bg1.png') center/cover no-repeat;
+  filter: brightness(0.5) saturate(0.7);
+  transform: scale(1.05);
+  animation: bgPan 20s ease-in-out infinite alternate;
 }
 @keyframes bgPan{
   from{transform:scale(1.05) translateX(0)}
@@ -108,7 +109,6 @@ body{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(0.85rem,2.5vw,1.1rem);
   font-weight:300;
-  font-style:italic;
   letter-spacing:0.25em;
   color:var(--accent-dim);
   margin-bottom:2rem;
@@ -621,10 +621,9 @@ footer{
   <div class="hero-content">
     <span class="hero-eyebrow">Model House Reservation</span>
     <h1 class="hero-title">別荘心地</h1>
-    <span class="hero-title-en">Bessosokochi</span>
+    <span class="hero-title-en">- ご予約フォーム -</span>
     <p class="hero-sub">
-      北の暮らしを愉しむ、上質な平屋。<br>
-      見学のご予約をお待ちしております。
+      北の暮らしを愉しむ、<br>上質な平屋。
     </p>
   </div>
   <div class="hero-scroll">
@@ -653,6 +652,7 @@ footer{
 
     <div class="field-group reveal">
       <span class="field-label">お名前 <span class="tag-req">必須</span></span>
+     <p class="sub-note">漢字</p>  
       <div class="row2">
         <div>
           <input type="text" id="last-name" placeholder="こまい" autocomplete="family-name">
@@ -661,7 +661,8 @@ footer{
           <input type="text" id="first-name" placeholder="たろう" autocomplete="given-name">
         </div>
       </div>
-      <div class="row2" style="margin-top:8px">
+      <p class="sub-note">フリガナ</p>
+      <div class="row2">
         <div>
           <input type="text" id="last-kana" placeholder="コマイ" oninput="this.value=toKatakana(this.value)">
         </div>
@@ -669,7 +670,7 @@ footer{
           <input type="text" id="first-kana" placeholder="タロウ" oninput="this.value=toKatakana(this.value)">
         </div>
       </div>
-      <p class="sub-note">上段：漢字 ／ 下段：フリガナ</p>
+     
       <div class="err" id="err-name">お名前をご入力ください。</div>
     </div>
 
