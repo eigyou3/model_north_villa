@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>返済シミュレーション — 別荘心地 | KOMAI HOME</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+:root {
+  /* 仕込み値（非表示） */
+  --price: 5980;   /* 万円 */
+  --rate: 0.93;    /* 年率% */
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="back-link" href="index.html">← PAGE TOP</a>
+  <span class="header-brand">KOMAI HOME</span>
+</header>
+
+<div class="main">
+
+  <div class="page-header">
+    <div class="form-header-rule">
+        <span class="form-header-label">Simulator</span>
+    </div>
+    <h2 class="form-title">シミュレーション</h2>
+    <p class="page-sub">頭金・返済年数・ボーナス払いを入力して<br>月々の支払い目安をご確認ください。</p>
+  </div>
+
+  <div class="property-banner">
+    <div class="property-name">
+      <span>Model House</span>
+      別荘心地
+    </div>
+  </div>
+
+  <!-- 入力 -->
+  <div class="input-section">
+
+    <div class="field">
+      <label class="field-label">頭金<span class="note">万円</span></label>
+      <div class="input-row">
+        <input type="number" id="inp-down" placeholder="0" min="0" max="5980" oninput="syncRange('down');calcPreview()">
+        <span class="input-unit">万円</span>
+      </div>
+      <div class="range-wrap">
+        <input type="range" id="rng-down" min="0" max="2000" step="10" value="0"
+          oninput="syncInput('down');calcPreview()">
+        <div class="range-labels"><span>0万円</span><span>2,000万円</span></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">返済年数<span class="note">年</span></label>
+      <div class="input-row">
+        <input type="number" id="inp-years" placeholder="35" min="1" max="50" value="35" oninput="syncRange('years');calcPreview()">
+        <span class="input-unit">年</span>
+      </div>
+      <div class="range-wrap">
+        <input type="range" id="rng-years" min="1" max="50" step="1" value="35"
+          oninput="syncInput('years');calcPreview()">
+        <div class="range-labels"><span>1年</span><span>50年</span></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">ボーナス加算額<span class="note">1回あたり・年2回</span></label>
+      <div class="input-row">
+        <input type="number" id="inp-bonus" placeholder="0" min="0" oninput="syncRange('bonus');calcPreview()">
+        <span class="input-unit">円</span>
+      </div>
+      <div class="range-wrap">
+        <input type="range" id="rng-bonus" min="0" max="500000" step="10000" value="0"
+          oninput="syncInput('bonus');calcPreview()">
+        <div class="range-labels"><span>0円</span><span>50万円</span></div>
+      </div>
+    </div>
+
+    <button class="btn-ghost" onclick="calculate()">
+      <span>シミュレーションを実行する</span>
+    </button>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="result-section">
+    <div class="result-card">
+      <div class="result-main">
+        <span class="result-main-label">月々のお支払い目安</span>
+        <div>
+          <span class="result-main-num" id="res-monthly">—</span>
+          <span class="result-main-unit">円 / 月</span>
+        </div>
+      </div>
+      <div class="result-breakdown">
+        <div class="result-item">
+          <span class="result-item-label">頭金</span>
+          <span class="result-item-val"><span id="res-down">—</span><span class="small">万円</span></span>
+        </div>
+        <div class="result-item">
+          <span class="result-item-label">返済年数</span>
+          <span class="result-item-val"><span id="res-years">—</span><span class="small">年</span></span>
+        </div>
+        <div class="result-item">
+          <span class="result-item-label">ボーナス加算</span>
+          <span class="result-item-val" id="res-bonus-val">なし</span>
+        </div>
+      </div>
+      <p class="result-note">※ 上記は目安です。実際の返済額は金融機関との契約内容によって異なります。</p>
+    </div>
+
+    <p class="retry-hint">頭金や返済年数を変えて、何度でもお試しいただけます。</p>
+
+    <!-- 問い合わせフォーム -->
+    <div class="inquiry-section" id="inquiry-section">
+      <h2 class="inquiry-title">この条件でお問い合わせする</h2>
+      <p class="inquiry-sub">このシミュレーションの結果を基にお問い合わせをお送りいただきますと<br>改めてスタッフよりメール、あるいはお電話でご連絡を差し上げます。</p>
+
+      <div class="inq-field">
+        <label class="inq-label">お名前 <span class="tag-req">必須</span></label>
+        <input type="text" id="inq-name" placeholder="こまい たろう">
+        <div class="err" id="err-name">お名前をご入力ください。</div>
+      </div>
+
+      <div class="inq-field">
+        <label class="inq-label">メールアドレス <span class="tag-req">必須</span> <span class="tag-or">または電話番号</span></label>
+        <input type="email" id="inq-email" placeholder="example@email.com" style="margin-bottom:8px" oninput="clearContactErr()">
+        <input type="tel" id="inq-tel" placeholder="09000000000" inputmode="numeric"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'');clearContactErr()">
+        <div class="err" id="err-contact">メールアドレスまたは電話番号をご入力ください。</div>
+      </div>
+
+      <button class="btn-solid" id="send-btn" onclick="doSend()">この条件で問い合わせる</button>
+    </div>
+
+    <!-- 送信完了 -->
+    <div class="done-section" id="done-section">
+      <div class="done-mark">✓</div>
+      <h2 class="done-title">お問い合わせを受け付けました</h2>
+      <p class="done-text">
+        ご入力いただきありがとうございます。<br>
+        スタッフより改めてご連絡させていただきます。<br><br>
+        実際の見学はこちらからご予約ください。
+      </p>
+      <a href="reservation.html" style="display:inline-block;margin-top:1.5rem;padding:14px 2rem;border:1px solid var(--accent-dim);color:var(--accent);font-family:'Cormorant Garamond',serif;font-size:0.95rem;letter-spacing:0.25em;text-decoration:none;border-radius:3px;transition:all 0.3s"
+        onmouseover="this.style.background='var(--accent)';this.style.color='var(--bg)'"
+        onmouseout="this.style.background='transparent';this.style.color='var(--accent)'">
+        来場予約へ →
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-brand">― komai home ―</p>
+  <div class="footer-links">
+    <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+  </div>
+</footer>
+
+<script>
+// ===== 仕込み値（非表示） =====
+const PRICE  = 5980;   // 万円
+const RATE   = 0.93;   // 年率%
+
+// ===== GAS URL =====
+const GAS_URL = "YOUR_GAS_URL_HERE";
+
+// ===== レンジ同期 =====
+function syncRange(key){
+  const inp = document.getElementById('inp-'+key);
+  const rng = document.getElementById('rng-'+key);
+  if(!rng) return;
+  let v = parseFloat(inp.value)||0;
+  const max = parseFloat(rng.max);
+  rng.value = Math.min(v, max);
+  updateRangeStyle(rng);
+}
+function syncInput(key){
+  const inp = document.getElementById('inp-'+key);
+  const rng = document.getElementById('rng-'+key);
+  inp.value = rng.value;
+  updateRangeStyle(rng);
+}
+function updateRangeStyle(rng){
+  const pct = (rng.value - rng.min) / (rng.max - rng.min) * 100;
+  rng.style.background = `linear-gradient(to right, var(--accent-dim) ${pct}%, var(--border-hover) ${pct}%)`;
+}
+
+// 初期スタイル
+document.querySelectorAll('input[type=range]').forEach(r=>updateRangeStyle(r));
+
+// ===== リアルタイムプレビュー（任意） =====
+function calcPreview(){} // 計算ボタン押下時のみにする
+
+// ===== メイン計算 =====
+function calculate(){
+  const down  = parseFloat(document.getElementById('inp-down').value)||0;
+  const years = parseInt(document.getElementById('inp-years').value)||35;
+  const bonus = parseFloat(document.getElementById('inp-bonus').value)||0;
+
+  const loan = Math.max(0, PRICE - down); // 万円
+  const loanYen = loan * 10000;
+  const r = RATE / 100 / 12;             // 月利
+  const n = years * 12;                  // 返済月数
+
+  let monthly = 0;
+  if(r > 0 && n > 0 && loanYen > 0){
+    // 元利均等（ボーナス分を除いた借入で計算）
+    const bonusYearTotal = bonus * 2;
+    const bonusTotal = bonusYearTotal * years;
+    const mainLoan = Math.max(0, loanYen - bonusTotal);
+    monthly = mainLoan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
+
+  // 結果表示
+  document.getElementById('res-monthly').textContent = Math.round(monthly).toLocaleString();
+  document.getElementById('res-down').textContent    = down.toLocaleString();
+  document.getElementById('res-years').textContent   = years;
+  document.getElementById('res-bonus-val').textContent =
+    bonus > 0 ? `${bonus.toLocaleString()}円 × 年2回` : 'なし';
+
+  document.getElementById('result-section').classList.add('show');
+  document.getElementById('result-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===== バリデーション =====
+function clearContactErr(){
+  document.getElementById('err-contact').classList.remove('show');
+}
+
+function validateInquiry(){
+  let ok = true;
+  const name  = document.getElementById('inq-name').value.trim();
+  const email = document.getElementById('inq-email').value.trim();
+  const tel   = document.getElementById('inq-tel').value.trim();
+
+  if(!name){
+    document.getElementById('err-name').classList.add('show');
+    ok = false;
+  } else {
+    document.getElementById('err-name').classList.remove('show');
+  }
+
+  if(!email && !tel){
+    document.getElementById('err-contact').classList.add('show');
+    ok = false;
+  } else {
+    document.getElementById('err-contact').classList.remove('show');
+  }
+
+  return ok;
+}
+
+// ===== 送信 =====
+async function doSend(){
+  if(!validateInquiry()) return;
+
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  const down    = parseFloat(document.getElementById('inp-down').value)||0;
+  const years   = parseInt(document.getElementById('inp-years').value)||35;
+  const bonus   = parseFloat(document.getElementById('inp-bonus').value)||0;
+  const monthly = document.getElementById('res-monthly').textContent;
+
+  const payload = {
+    date:       new Date().toISOString().slice(0,10),
+    type:       'simulator',
+    property:   '別荘心地（bessou-gokochi）',
+    name:       document.getElementById('inq-name').value,
+    email:      document.getElementById('inq-email').value,
+    tel:        document.getElementById('inq-tel').value,
+    downPay:    down + '万円',
+    loanAmt:    (PRICE - down) + '万円',
+    years:      years + '年',
+    bonus:      bonus > 0 ? bonus.toLocaleString() + '円×年2回' : 'なし',
+    monthly:    monthly + '円',
+    simSummary: `頭金${down}万円／返済${years}年／ボーナス${bonus > 0 ? bonus.toLocaleString()+'円×年2回' : 'なし'}／月々${monthly}円`,
+  };
+
+  try{
+    await fetch(GAS_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    document.getElementById('inquiry-section').style.display = 'none';
+    document.getElementById('done-section').classList.add('show');
+    document.getElementById('done-section').scrollIntoView({behavior:'smooth'});
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = 'この条件で問い合わせる';
+    alert('送信に失敗しました。時間をおいて再度お試しください。');
+  }
+}
+</script>
+
+<!-- プライバシーモーダル -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal-box">
+    <h3 class="modal-title">プライバシーポリシー</h3>
+    <div class="modal-body">
+      <p>こまいホーム（以下「当社」）は、お客様の個人情報の保護を重要な責務と認識し、以下の方針に基づいて適切に取り扱います。</p><br>
+      <p>株式会社こまいホーム（以下「弊社」）は、お客様の個人情報の保護を重要な責務と認識し、以下の方針に基づき適切な管理・保護に努めます。</p>
+      <p><strong>個人情報の利用目的</strong><br>当社はお客様の個人情報を、以下に掲げる事業の遂行に必要な範囲において、契約や取引の履行、および当社が提供する商品、情報、サービス、アフターサービスの提供とこれらに関連する各種手続（融資、許認可取得、登記簿）の支援、取次、ならびに営業活動、及びマーケティング活動等に利用いたします。提携先、業務委託先等の第三者に業務を遂行する為に必要な範囲内での提供することがあります。収集目的の範囲あるいは法令・規範に基づく要請の範囲を越えた利用、提供、預託は行いません。</p><br>
+      <p><strong>個人情報の正確性と安全の確保</strong><br>当社は、個人情報を利用目的の達成に必要な範囲で正確かつ最新の内容に保ち、安全管理のために必要かつ適切な措置を講じるように配慮して厳重に管理いたします。また、個人情報の取り扱いを外部に委託する場合は、守秘義務契約を締結するとともに、適切な管理、監督をいたします。</p><br>
+      <p><strong>お客様情報の利用範囲</strong><br>当社では、各社の役割と目的達成の為に必要な範囲に限りお客様情報の共同利用を行います。共同利用する情報の項目は次の通りです。氏名、性別、生年月日、住所、電話番号、ＦＡＸ番号、電子メールアドレス等お客様個人に関する情報、ご世帯に関する情報、ご契約に関する情報、設計図面及び建築物に関する情報。</p><br>
+      <p><strong>個人情報の開示・訂正・利用停止の申出について</strong><br>当社は、個人情報に関しご本人様からの開示、訂正、利用停止等を求められたときには、法令に基づきその求めに応じます。なお開示をする際には、所定の手数料を申し受けます。個人情報に関し、開示、訂正、利用停止等のご要望については、下記のお問合せ窓口にご連絡下さい。請求者がご本人であることを確認の上必要な手続きについてご連絡致します。なお個人情報に関するその他お問合せについても下記窓口をご利用ください。</p><br>
+      <p><strong>法令・規範の導守</strong><br>当社は個人情報に関する法令・規範を導守いたします。</p><br>
+      <p><strong>コンプライアンス・プログラムの継続的改善の実施</strong><br>当社は、個人情報を適切に保護する為、個人情報コンプライアンス・プログラム（本方針・｢個人情報保護規定｣及びその他の規定、規則を含む）を策定し、これを当社従業員その他の関係者に周知・徹底させて実施し、適宣見直し、継続的に改善します。</p><br>
+      <p>komai home ┃ 0166-32-2009</p>
+    </div>
+    <button class="modal-close" onclick="closePrivacy()">閉じる</button>
+  </div>
+</div>
+
+<script>
+function openPrivacy(){document.getElementById('privacy-modal').classList.add('open')}
+function closePrivacy(){document.getElementById('privacy-modal').classList.remove('open')}
+document.getElementById('privacy-modal').addEventListener('click',function(e){
+  if(e.target===this)closePrivacy();
+});
+</script>
+</body>
+</html>

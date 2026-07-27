@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>来場予約 — 別荘心地 | KOMAI HOME</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="back-link" href="index.html">← PAGE TOP</a>
+  <span class="header-brand">KOMAI HOME</span>
+</header>
+
+<div id="form-section">
+  <div class="form-section">
+    <div class="form-header reveal">
+      <div class="form-header-rule">
+        <span class="form-header-label">Reservation</span>
+      </div>
+      <h2 class="form-title">来場予約</h2>
+      <p class="page-sub">来場をご予約される際は<br>下記の入力フォームよりご登録ください</p>
+
+    </div>
+
+    <div class="field-group reveal">
+      <span class="field-label">お名前 <span class="tag-opt">任意</span></span>
+      <p class="sub-note">電話番号でご登録の場合は必須です</p>
+     <p class="sub-note">漢字</p>  
+      <div class="row2">
+        <div>
+          <input type="text" id="last-name" placeholder="こまい" autocomplete="family-name">
+        </div>
+        <div>
+          <input type="text" id="first-name" placeholder="たろう" autocomplete="given-name">
+        </div>
+      </div>
+      <p class="sub-note">フリガナ</p>
+      <div class="row2">
+        <div>
+          <input type="text" id="last-kana" placeholder="コマイ">
+        </div>
+        <div>
+          <input type="text" id="first-kana" placeholder="タロウ">
+        </div>
+      </div>
+     
+      <div class="err" id="err-name">電話番号でご登録の場合は、お名前のご入力が必須です。</div>
+    </div>
+
+    <hr class="field-divider">
+
+    <div class="field-group reveal">
+      <span class="field-label">電話番号 <span class="tag-req">必須</span> <span class="tag-or">またはメール</span></span>
+      <input type="tel" id="tel" placeholder="09000000000" maxlength="11" inputmode="numeric"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'');clearContactErr()">
+      <p class="sub-note">ハイフンなし・半角数字</p>
+      <div class="err" id="err-contact">メールアドレスまたは電話番号をご入力ください。</div>
+    </div>
+
+    <hr class="field-divider">
+
+    <div class="field-group reveal">
+      <span class="field-label">メールアドレス <span class="tag-req">必須</span> <span class="tag-or">または電話番号</span></span>
+      <input type="email" id="email" placeholder="example@email.com" autocomplete="email" oninput="clearContactErr()">
+      <p class="sub-note">返信はメールにてお送りします。@マーク以降まで正確にご入力ください。</p>
+      <div class="err" id="err-email">メールアドレスを正しくご入力ください（@以降も必須です）。</div>
+    </div>
+
+    <hr class="field-divider">
+
+    <div class="field-group reveal">
+      <span class="field-label">ご希望の日付 <span class="tag-req">必須</span></span>
+      <div class="cal-wrap">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="prevMonth()">‹</button>
+          <span class="cal-month" id="cal-month-label"></span>
+          <button class="cal-nav" onclick="nextMonth()">›</button>
+        </div>
+        <div class="date-grid">
+          <div class="cal-dow sun">日</div>
+          <div class="cal-dow">月</div>
+          <div class="cal-dow">火</div>
+          <div class="cal-dow">水</div>
+          <div class="cal-dow">木</div>
+          <div class="cal-dow">金</div>
+          <div class="cal-dow sat">土</div>
+        </div>
+        <div class="date-grid" id="cal-grid"></div>
+        <div class="selected-date-display" id="sel-date-display"></div>
+      </div>
+      <div class="err" id="err-date">ご希望の日付を選択してください。</div>
+    </div>
+
+    <div class="field-group reveal" style="margin-top:-0.5rem">
+      <span class="field-label">ご希望の時間 <span class="tag-req">必須</span></span>
+      <select id="time-select">
+        <option value="">時間を選択してください</option>
+      </select>
+      <div class="err" id="err-time">ご希望の時間を選択してください。</div>
+    </div>
+
+    <hr class="field-divider">
+
+    <div class="field-group reveal">
+      <span class="field-label">担当スタッフへのメッセージ <span class="tag-opt">任意</span></span>
+      <textarea id="message" placeholder="ご要望・ご質問などがあればお気軽にどうぞ。"></textarea>
+    </div>
+
+    <div class="submit-wrap reveal">
+      <button class="btn-ghost" onclick="toConfirm()">
+        <span>予約内容を確認する</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-wrap" id="confirm-section">
+  <div class="confirm-header">
+    <div class="form-header-rule">
+      <span class="form-header-label">Confirm</span>
+    </div>
+    <h2 class="confirm-title">ご予約内容の確認</h2>
+    <p class="confirm-sub">以下の内容でよろしければ「送信する」を押してください。</p>
+  </div>
+  <table class="confirm-table" id="confirm-table"></table>
+  <div class="confirm-btn-row">
+    <button class="btn-muted" onclick="backToForm()">← 修正する</button>
+    <button class="btn-solid" id="send-btn" onclick="doSend()">送信する</button>
+  </div>
+</div>
+
+<div class="done-wrap" id="done-section">
+  <div class="done-mark">✓</div>
+  <h2 class="done-title">ご予約を受け付けました</h2>
+  <p class="done-text">
+    ご予約いただきありがとうございます。<br>
+    ご入力のメールアドレスへ確認メールをお送りします。<br><br>
+    スタッフより改めてご連絡させていただきます。<br>
+    当日お会いできることを楽しみにしております。
+  </p>
+</div>
+
+<footer>
+  <p class="footer-brand">― komai home ―</p>
+  <div class="footer-links">
+    <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal-box">
+    <h3 class="modal-title">プライバシーポリシー</h3>
+    <div class="modal-body">
+      <p>こまいホーム（以下「当社」）は、お客様の個人情報の保護を重要な責務と認識し、以下の方針に基づいて適切に取り扱います。</p><br>
+      <p>株式会社こまいホーム（以下「弊社」）は、お客様の個人情報の保護を重要な責務と認識し、以下の方針に基づき適切な管理・保護に努めます。</p>
+    <p><strong>個人情報の利用目的</strong><br>当社はお客様の個人情報を、以下に掲げる事業の遂行に必要な範囲において、契約や取引の履行、および当社が提供する商品、情報、サービス、アフターサービスの提供とこれらに関連する各種手続（融資、許認可取得、登記簿）の支援、取次、ならびに営業活動、及びマーケティング活動等に利用いたします。提携先、業務委託先等の第三者に業務を遂行する為に必要な範囲内での提供することがあります。収集目的の範囲あるいは法令・規範に基づく要請の範囲を越えた利用、提供、預託は行いません。</p><br>
+    <p><strong>個人情報の正確性と安全の確保</strong><br>当社は、個人情報を利用目的の達成に必要な範囲で正確かつ最新の内容に保ち、安全管理のために必要かつ適切な措置を講じるように配慮して厳重に管理いたします。また、個人情報の取り扱いを外部に委託する場合は、守秘義務契約を締結するとともに、適切な管理、監督をいたします。</p><br>
+    <p><strong>お客様情報の利用範囲</strong><br>当社では、各社の役割と目的達成の為に必要な範囲に限りお客様情報の共同利用を行います。共同利用する情報の項目は次の通りです。氏名、性別、生年月日、住所、電話番号、ＦＡＸ番号、電子メールアドレス等お客様個人に関する情報、ご世帯に関する情報、ご契約に関する情報、設計図面及び建築物に関する情報。</p><br>
+    <p><strong>個人情報の開示・訂正・利用停止の申出について</strong><br>当社は、個人情報に関しご本人様からの開示、訂正、利用停止等を求められたときには、法令に基づきその求めに応じます。なお開示をする際には、所定の手数料を申し受けます。個人情報に関し、開示、訂正、利用停止等のご要望については、下記のお問合せ窓口にご連絡下さい。請求者がご本人であることを確認の上必要な手続きについてご連絡致します。なお個人情報に関するその他お問合せについても下記窓口をご利用ください。</p><br>
+    <p><strong>法令・規範の導守</strong><br>当社は個人情報に関する法令・規範を導守いたします。</p><br>
+    <p><strong>コンプライアンス・プログラムの継続的改善の実施</strong><br>当社は、個人情報を適切に保護する為、個人情報コンプライアンス・プログラム（本方針・｢個人情報保護規定｣及びその他の規定、規則を含む）を策定し、これを当社従業員その他の関係者に周知・徹底させて実施し、適宣見直し、継続的に改善します。</p><br>
+  　<p>komai home ┃ 0166-32-2009</p>  
+  </div>
+    <button class="modal-close" onclick="closePrivacy()">閉じる</button>
+  </div>
+</div>
+
+<script>
+// ===== GAS URL =====
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxPpMTBz5PobqYVcCpiSzeWRaAQEtonjudd7fE1iD1dbc9whiRMxugDjlgh4dp_q29l/exec";
+
+// ===== カタカナ変換 =====
+function toKatakana(str){
+  return str.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
+}
+
+// IMEの変換確定時（compositionend）だけカタカナに変換。
+// input毎に変換すると、スマホIMEで濁点・半濁点の入力途中に
+// 値がリセットされて濁点が抜け落ちることがあるため。
+function setupKanaField(id){
+  const el = document.getElementById(id);
+  el.addEventListener('compositionend', () => {
+    el.value = toKatakana(el.value);
+  });
+  // PC等、IME組版を使わず直接カタカナ等を貼り付けた場合にも対応
+  el.addEventListener('blur', () => {
+    el.value = toKatakana(el.value);
+  });
+}
+setupKanaField('last-kana');
+setupKanaField('first-kana');
+
+// ===== カレンダー =====
+// ★ 予約を受け付けたくない日は、下の配列に "YYYY-MM-DD" の形式で追加してください
+//    例: "2026-08-13", "2026-08-14",
+const BLOCKED_DATES = [ "2026-07-25", "2026-07-26" ];
+
+let calYear, calMonth, selectedDate = null;
+const today = new Date();
+
+function initCal(){
+  calYear = today.getFullYear();
+  calMonth = today.getMonth();
+  renderCal();
+}
+
+function renderCal(){
+  const label = document.getElementById('cal-month-label');
+  label.textContent = `${calYear}年 ${calMonth+1}月`;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  const first = new Date(calYear, calMonth, 1);
+  const last  = new Date(calYear, calMonth+1, 0);
+  const startDow = first.getDay(); // 0=日
+
+  // 空白
+  for(let i=0;i<startDow;i++){
+    const empty = document.createElement('div');
+    empty.className='cal-day empty';
+    grid.appendChild(empty);
+  }
+
+  for(let d=1;d<=last.getDate();d++){
+    const dt = new Date(calYear, calMonth, d);
+    const dow = dt.getDay();
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPast = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const isBlocked = BLOCKED_DATES.includes(dateStr);
+    const isDisabled = isPast || isBlocked;
+
+    const el = document.createElement('div');
+    el.textContent = d;
+    let cls = 'cal-day';
+    if(dow===0) cls += ' sun-day';
+    if(dow===6) cls += ' sat-day';
+    if(isDisabled) cls += ' disabled';
+    if(!isDisabled){
+      // 今日
+      if(dt.toDateString()===today.toDateString()) cls += ' today';
+      if(selectedDate===dateStr) cls += ' selected';
+      el.onclick = ()=>selectDate(dateStr, el);
+    }
+    el.className = cls;
+    grid.appendChild(el);
+  }
+}
+
+function selectDate(dateStr, el){
+  selectedDate = dateStr;
+  document.querySelectorAll('.cal-day.selected').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  const [y,m,d] = dateStr.split('-');
+  const dt = new Date(y,m-1,d);
+  const days=['日','月','火','水','木','金','土'];
+  document.getElementById('sel-date-display').textContent =
+    `${y}年${parseInt(m)}月${parseInt(d)}日（${days[dt.getDay()]}）`;
+  document.getElementById('err-date').classList.remove('show');
+}
+
+function prevMonth(){
+  calMonth--;
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCal();
+}
+function nextMonth(){
+  calMonth++;
+  if(calMonth>11){calMonth=0;calYear++;}
+  renderCal();
+}
+
+// ===== 時間選択肢生成 =====
+function initTimes(){
+  const sel = document.getElementById('time-select');
+  for(let h=10;h<=17;h++){
+    for(let m=0;m<60;m+=30){
+      if(h===17&&m>0) break;
+      const hh=String(h).padStart(2,'0');
+      const mm=String(m).padStart(2,'0');
+      const opt=document.createElement('option');
+      opt.value=`${hh}:${mm}`;
+      opt.textContent=`${hh}:${mm}`;
+      sel.appendChild(opt);
+    }
+  }
+}
+
+initCal();
+initTimes();
+
+// ===== バリデーション =====
+function clearContactErr(){
+  document.getElementById('err-contact').classList.remove('show');
+}
+
+function validate(){
+  let ok=true;
+  const ln=document.getElementById('last-name').value.trim();
+  const fn=document.getElementById('first-name').value.trim();
+  const tel=document.getElementById('tel').value.trim();
+  const em=document.getElementById('email').value.trim();
+  const ti=document.getElementById('time-select').value;
+
+  const errName=document.getElementById('err-name');
+  const errContact=document.getElementById('err-contact');
+  const errEmail=document.getElementById('err-email');
+  const errDate=document.getElementById('err-date');
+  const errTime=document.getElementById('err-time');
+
+  const emailFilled = em.length > 0;
+  const emailValid  = emailFilled && em.includes('@') && em.indexOf('@') !== em.length-1;
+
+  // メールを入力しているのに不正な場合は個別にエラー表示
+  if(emailFilled && !emailValid){
+    errEmail.classList.add('show'); ok=false;
+  } else {
+    errEmail.classList.remove('show');
+  }
+
+  // 電話番号 or メールアドレス のいずれかが必須
+  if(!tel && !emailValid){
+    errContact.classList.add('show'); ok=false;
+  } else {
+    errContact.classList.remove('show');
+  }
+
+  // 電話番号で登録する場合はお名前が必須
+  if(tel && (!ln||!fn)){
+    errName.classList.add('show'); ok=false;
+  } else {
+    errName.classList.remove('show');
+  }
+
+  if(!selectedDate){errDate.classList.add('show');ok=false;}
+  else errDate.classList.remove('show');
+
+  if(!ti){errTime.classList.add('show');ok=false;}
+  else errTime.classList.remove('show');
+
+  return ok;
+}
+
+// ===== 確認画面 =====
+function toConfirm(){
+  if(!validate()) return;
+
+  const [y,m,d]=selectedDate.split('-');
+  const dt=new Date(y,m-1,d);
+  const days=['日','月','火','水','木','金','土'];
+  const dateLabel=`${y}年${parseInt(m)}月${parseInt(d)}日（${days[dt.getDay()]}）`;
+
+  const ln = document.getElementById('last-name').value.trim();
+  const fn = document.getElementById('first-name').value.trim();
+  const lk = document.getElementById('last-kana').value.trim();
+  const fk = document.getElementById('first-kana').value.trim();
+  const nameLabel = (ln || fn) ? `${ln} ${fn}`.trim() : '—';
+  const kanaLabel  = (lk || fk) ? `${lk} ${fk}`.trim() : '—';
+
+  const rows=[
+    ['お名前', nameLabel],
+    ['フリガナ', kanaLabel],
+    ['電話番号', document.getElementById('tel').value || '—'],
+    ['メール', document.getElementById('email').value || '—'],
+    ['ご希望日時', `${dateLabel} ${document.getElementById('time-select').value}`],
+    ['メッセージ', document.getElementById('message').value || '—'],
+  ];
+
+  document.getElementById('confirm-table').innerHTML = rows.map(([k,v])=>
+    `<tr><td>${k}</td><td>${v}</td></tr>`
+  ).join('');
+
+  document.getElementById('form-section').style.display='none';
+  document.getElementById('confirm-section').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function backToForm(){
+  document.getElementById('confirm-section').classList.remove('active');
+  document.getElementById('form-section').style.display='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== 送信 =====
+async function doSend(){
+  const btn=document.getElementById('send-btn');
+  btn.disabled=true;
+  btn.textContent='送信中...';
+
+  const [y,m,d]=selectedDate.split('-');
+  const dt=new Date(y,m-1,d);
+  const days=['日','月','火','水','木','金','土'];
+
+  const payload={
+    date: new Date().toISOString().slice(0,10),
+    type: 'reservation',
+    lastName:   document.getElementById('last-name').value,
+    firstName:  document.getElementById('first-name').value,
+    lastKana:   document.getElementById('last-kana').value,
+    firstKana:  document.getElementById('first-kana').value,
+    tel:        document.getElementById('tel').value,
+    email:      document.getElementById('email').value,
+    visitDate:  `${y}年${parseInt(m)}月${parseInt(d)}日（${days[dt.getDay()]}）`,
+    visitTime:  document.getElementById('time-select').value,
+    message:    document.getElementById('message').value,
+  };
+
+  try{
+    await fetch(GAS_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    document.getElementById('confirm-section').classList.remove('active');
+    document.getElementById('done-section').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    btn.disabled=false;
+    btn.textContent='送信する';
+    alert('送信に失敗しました。時間をおいて再度お試しください。');
+  }
+}
+
+// ===== スクロールリビール =====
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ===== プライバシー =====
+function openPrivacy(){document.getElementById('privacy-modal').classList.add('open')}
+function closePrivacy(){document.getElementById('privacy-modal').classList.remove('open')}
+document.getElementById('privacy-modal').addEventListener('click',function(e){
+  if(e.target===this) closePrivacy();
+});
+</script>
+</body>
+</html>
