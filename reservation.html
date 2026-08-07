@@ -4,13 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>来場予約 — 別荘心地 | KOMAI HOME</title>
+<meta name="description" content="モデルハウス「別荘心地」の来場予約はこちらから。ご希望の日時を選んで簡単にご予約いただけます。">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="別荘心地 | KOMAI HOME">
+<meta property="og:title" content="来場予約 — 別荘心地 | KOMAI HOME">
+<meta property="og:description" content="モデルハウス「別荘心地」の来場予約はこちらから。ご希望の日時を選んで簡単にご予約いただけます。">
+<meta property="og:image" content="images/common/ogp.png">
+<meta property="og:url" content="https://eigyou3.github.io/model_north_villa/reservation.html">
+<meta property="og:locale" content="ja_JP">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="来場予約 — 別荘心地 | KOMAI HOME">
+<meta name="twitter:description" content="モデルハウス「別荘心地」の来場予約はこちらから。ご希望の日時を選んで簡単にご予約いただけます。">
+<meta name="twitter:image" content="images/common/ogp.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <a class="back-link" href="index.html">← PAGE TOP</a>
-  <span class="header-brand">KOMAI HOME</span>
+  <a class="back-link" href="index.html">← トップページに戻る</a>
 </header>
 
 <div id="form-section">
@@ -19,7 +39,7 @@
       <div class="form-header-rule">
         <span class="form-header-label">Reservation</span>
       </div>
-      <h2 class="form-title">来場予約</h2>
+      <h2 class="form-title">ご予約フォーム</h2>
       <p class="page-sub">来場をご予約される際は<br>下記の入力フォームよりご登録ください</p>
 
     </div>
@@ -143,9 +163,14 @@
 </div>
 
 <footer>
-  <p class="footer-brand">― komai home ―</p>
-  <div class="footer-links">
-    <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+  <div class="footer-nav">
+    <div class="footer-nav-left">
+      <a href="simulator.html" class="footer-link-large">返済シミュレーションをしてみる</a>
+    </div>
+    <div class="footer-nav-right">
+      <a href="https://komai-home.co.jp" target="_blank" rel="noopener">KOMAI HOME</a>
+      <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+    </div>
   </div>
 </footer>
 
@@ -195,7 +220,7 @@ setupKanaField('first-kana');
 // ===== カレンダー =====
 // ★ 予約を受け付けたくない日は、下の配列に "YYYY-MM-DD" の形式で追加してください
 //    例: "2026-08-13", "2026-08-14",
-const BLOCKED_DATES = [ "2026-07-25", "2026-07-26" ];
+const BLOCKED_DATES = [ "2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16"];
 
 let calYear, calMonth, selectedDate = null;
 const today = new Date();

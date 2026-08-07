@@ -4,6 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>返済シミュレーション — 別荘心地 | KOMAI HOME</title>
+<meta name="description" content="頭金や返済年数を入力して、月々のお支払い目安をシミュレーション。モデルハウス「別荘心地」の資金計画にお役立てください。">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="別荘心地 | KOMAI HOME">
+<meta property="og:title" content="返済シミュレーション — 別荘心地 | KOMAI HOME">
+<meta property="og:description" content="頭金や返済年数を入力して、月々のお支払い目安をシミュレーション。モデルハウス「別荘心地」の資金計画にお役立てください。">
+<meta property="og:image" content="images/common/ogp.png">
+<meta property="og:url" content="https://eigyou3.github.io/model_north_villa/simulator.html">
+<meta property="og:locale" content="ja_JP">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="返済シミュレーション — 別荘心地 | KOMAI HOME">
+<meta name="twitter:description" content="頭金や返済年数を入力して、月々のお支払い目安をシミュレーション。モデルハウス「別荘心地」の資金計画にお役立てください。">
+<meta name="twitter:image" content="images/common/ogp.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="stylesheet" href="style.css">
 <style>
 
@@ -17,8 +38,7 @@
 <body>
 
 <header class="site-header">
-  <a class="back-link" href="index.html">← PAGE TOP</a>
-  <span class="header-brand">KOMAI HOME</span>
+  <a class="back-link" href="index.html">← トップページに戻る</a>
 </header>
 
 <div class="main">
@@ -42,26 +62,26 @@
   <div class="input-section">
 
     <div class="field">
-      <label class="field-label">頭金<span class="note">万円</span></label>
+      <label class="field-label">頭金<span class="note">円</span></label>
       <div class="input-row">
-        <input type="number" id="inp-down" placeholder="0" min="0" max="5980" oninput="syncRange('down');calcPreview()">
-        <span class="input-unit">万円</span>
+        <input type="number" id="inp-down" placeholder="100000" min="0" max="59800000" step="10000" oninput="syncRange('down');calcPreview()">
+        <span class="input-unit">円</span>
       </div>
       <div class="range-wrap">
-        <input type="range" id="rng-down" min="0" max="2000" step="10" value="0"
+        <input type="range" id="rng-down" min="0" max="20000000" step="10000" value="0"
           oninput="syncInput('down');calcPreview()">
-        <div class="range-labels"><span>0万円</span><span>2,000万円</span></div>
+        <div class="range-labels"><span>0円</span><span>20,000,000円</span></div>
       </div>
     </div>
 
     <div class="field">
       <label class="field-label">返済年数<span class="note">年</span></label>
       <div class="input-row">
-        <input type="number" id="inp-years" placeholder="35" min="1" max="50" value="35" oninput="syncRange('years');calcPreview()">
+        <input type="number" id="inp-years" placeholder="40" min="1" max="50" oninput="syncRange('years');calcPreview()">
         <span class="input-unit">年</span>
       </div>
       <div class="range-wrap">
-        <input type="range" id="rng-years" min="1" max="50" step="1" value="35"
+        <input type="range" id="rng-years" min="1" max="50" step="1" value="1"
           oninput="syncInput('years');calcPreview()">
         <div class="range-labels"><span>1年</span><span>50年</span></div>
       </div>
@@ -70,13 +90,13 @@
     <div class="field">
       <label class="field-label">ボーナス加算額<span class="note">1回あたり・年2回</span></label>
       <div class="input-row">
-        <input type="number" id="inp-bonus" placeholder="0" min="0" oninput="syncRange('bonus');calcPreview()">
+        <input type="number" id="inp-bonus" placeholder="100000" min="0" oninput="syncRange('bonus');calcPreview()">
         <span class="input-unit">円</span>
       </div>
       <div class="range-wrap">
         <input type="range" id="rng-bonus" min="0" max="500000" step="10000" value="0"
           oninput="syncInput('bonus');calcPreview()">
-        <div class="range-labels"><span>0円</span><span>50万円</span></div>
+        <div class="range-labels"><span>0円</span><span>500,000円</span></div>
       </div>
     </div>
 
@@ -98,7 +118,7 @@
       <div class="result-breakdown">
         <div class="result-item">
           <span class="result-item-label">頭金</span>
-          <span class="result-item-val"><span id="res-down">—</span><span class="small">万円</span></span>
+          <span class="result-item-val"><span id="res-down">—</span><span class="small">円</span></span>
         </div>
         <div class="result-item">
           <span class="result-item-label">返済年数</span>
@@ -109,15 +129,18 @@
           <span class="result-item-val" id="res-bonus-val">なし</span>
         </div>
       </div>
-      <p class="result-note">※ 上記は目安です。実際の返済額は金融機関との契約内容によって異なります。</p>
+      <p class="result-note">※ 上記は目安です。<br>実際の返済額は金融機関との契約内容によって異なります。</p>
     </div>
-
-    <p class="retry-hint">頭金や返済年数を変えて、何度でもお試しいただけます。</p>
 
     <!-- 問い合わせフォーム -->
     <div class="inquiry-section" id="inquiry-section">
       <h2 class="inquiry-title">この条件でお問い合わせする</h2>
       <p class="inquiry-sub">このシミュレーションの結果を基にお問い合わせをお送りいただきますと<br>改めてスタッフよりメール、あるいはお電話でご連絡を差し上げます。</p>
+
+      <p class="reservation-note">
+        ※ こちらは「お問い合わせ」であり、来場のご予約ではございません。<br>
+        実際にモデルハウスをご見学されたい場合は、<a href="reservation.html">ご予約フォーム</a> からお申し込みください。
+      </p>
 
       <div class="inq-field">
         <label class="inq-label">お名前 <span class="tag-req">必須</span></label>
@@ -156,9 +179,14 @@
 </div>
 
 <footer>
-  <p class="footer-brand">― komai home ―</p>
-  <div class="footer-links">
-    <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+  <div class="footer-nav">
+    <div class="footer-nav-left">
+      <a href="reservation.html" class="footer-link-large">ご予約のみの方はコチラ</a>
+    </div>
+    <div class="footer-nav-right">
+      <a href="https://komai-home.co.jp" target="_blank" rel="noopener">KOMAI HOME</a>
+      <a href="#" onclick="openPrivacy();return false;">プライバシーポリシー</a>
+    </div>
   </div>
 </footer>
 
@@ -168,7 +196,7 @@ const PRICE  = 5980;   // 万円
 const RATE   = 0.93;   // 年率%
 
 // ===== GAS URL =====
-const GAS_URL = "YOUR_GAS_URL_HERE";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxPpMTBz5PobqYVcCpiSzeWRaAQEtonjudd7fE1iD1dbc9whiRMxugDjlgh4dp_q29l/exec";
 
 // ===== レンジ同期 =====
 function syncRange(key){
@@ -198,12 +226,16 @@ document.querySelectorAll('input[type=range]').forEach(r=>updateRangeStyle(r));
 function calcPreview(){} // 計算ボタン押下時のみにする
 
 // ===== メイン計算 =====
-function calculate(){
-  const down  = parseFloat(document.getElementById('inp-down').value)||0;
-  const years = parseInt(document.getElementById('inp-years').value)||35;
-  const bonus = parseFloat(document.getElementById('inp-bonus').value)||0;
+// シミュレーション初回実行フラグ（ヒントモーダルを最初の1回だけ出す）
+let simCalculatedOnce = false;
 
-  const loan = Math.max(0, PRICE - down); // 万円
+function calculate(){
+  const down  = parseFloat(document.getElementById('inp-down').value)||100000; // 円
+  const years = parseInt(document.getElementById('inp-years').value)||40;
+  const bonus = parseFloat(document.getElementById('inp-bonus').value)||100000; // 円
+
+  const downMan = down / 10000; // 万円換算
+  const loan = Math.max(0, PRICE - downMan); // 万円
   const loanYen = loan * 10000;
   const r = RATE / 100 / 12;             // 月利
   const n = years * 12;                  // 返済月数
@@ -226,6 +258,11 @@ function calculate(){
 
   document.getElementById('result-section').classList.add('show');
   document.getElementById('result-section').scrollIntoView({behavior:'smooth',block:'start'});
+
+  if(!simCalculatedOnce){
+    simCalculatedOnce = true;
+    setTimeout(openSimTips, 500); // スクロール後に表示
+  }
 }
 
 // ===== バリデーション =====
@@ -264,10 +301,11 @@ async function doSend(){
   btn.disabled = true;
   btn.textContent = '送信中...';
 
-  const down    = parseFloat(document.getElementById('inp-down').value)||0;
-  const years   = parseInt(document.getElementById('inp-years').value)||35;
+  const down    = parseFloat(document.getElementById('inp-down').value)||0; // 円
+  const years   = parseInt(document.getElementById('inp-years').value)||40;
   const bonus   = parseFloat(document.getElementById('inp-bonus').value)||0;
   const monthly = document.getElementById('res-monthly').textContent;
+  const downMan = down / 10000; // 万円換算
 
   const payload = {
     date:       new Date().toISOString().slice(0,10),
@@ -276,12 +314,12 @@ async function doSend(){
     name:       document.getElementById('inq-name').value,
     email:      document.getElementById('inq-email').value,
     tel:        document.getElementById('inq-tel').value,
-    downPay:    down + '万円',
-    loanAmt:    (PRICE - down) + '万円',
+    downPay:    down.toLocaleString() + '円',
+    loanAmt:    (PRICE - downMan) + '万円',
     years:      years + '年',
     bonus:      bonus > 0 ? bonus.toLocaleString() + '円×年2回' : 'なし',
     monthly:    monthly + '円',
-    simSummary: `頭金${down}万円／返済${years}年／ボーナス${bonus > 0 ? bonus.toLocaleString()+'円×年2回' : 'なし'}／月々${monthly}円`,
+    simSummary: `頭金${down.toLocaleString()}円／返済${years}年／ボーナス${bonus > 0 ? bonus.toLocaleString()+'円×年2回' : 'なし'}／月々${monthly}円`,
   };
 
   try{
@@ -320,11 +358,34 @@ async function doSend(){
   </div>
 </div>
 
+<!-- シミュレーションのヒントモーダル -->
+<div class="modal-overlay" id="sim-tips-modal">
+  <div class="modal-box">
+    <h3 class="modal-title">条件を変えて何度でも試せます</h3>
+    <div class="modal-body">
+      <p>頭金・返済年数・ボーナス加算額は、何度でも自由に変更してシミュレーションし直すことができます。</p><br>
+      <p>月々のお支払いが高いと感じた場合は、<br>
+      ・頭金を増やす<br>
+      ・返済年数を延ばす<br>
+      ・ボーナス払いを活用する<br>
+      など、条件を調整して再度お試しください。</p>
+    </div>
+    <button class="modal-close" onclick="closeSimTips()">閉じる</button>
+  </div>
+</div>
+
 <script>
 function openPrivacy(){document.getElementById('privacy-modal').classList.add('open')}
 function closePrivacy(){document.getElementById('privacy-modal').classList.remove('open')}
 document.getElementById('privacy-modal').addEventListener('click',function(e){
   if(e.target===this)closePrivacy();
+});
+
+// シミュレーションのヒントモーダル
+function openSimTips(){document.getElementById('sim-tips-modal').classList.add('open')}
+function closeSimTips(){document.getElementById('sim-tips-modal').classList.remove('open')}
+document.getElementById('sim-tips-modal').addEventListener('click',function(e){
+  if(e.target===this)closeSimTips();
 });
 </script>
 </body>

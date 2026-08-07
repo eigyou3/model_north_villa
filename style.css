@@ -511,36 +511,56 @@ input[type=number] {
 /* ── フッター ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 2.5rem 1.5rem;
-  text-align: center;
+  padding: 1.5rem 0.5rem;
   margin-top: 4rem;
 }
 
-.footer-brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 12px;
-  letter-spacing: 0.4em;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-}
-
-.footer-links {
+.footer-nav {
+  max-width: 700px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.footer-links a {
-  font-size: 11px;
+.footer-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-nav-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.footer-nav a {
+  font-size: 9px;
   letter-spacing: 0.12em;
   color: var(--text-dim);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.footer-links a:hover {
+.footer-nav a.footer-link-large {
+  font-size: 13px;
+}
+
+.footer-nav a:hover {
   color: var(--accent);
 }
+
+.footer-nav-right a:first-child {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+}
+
 
 /* ── プライバシーモーダル ── */
 .modal-overlay {
@@ -1376,6 +1396,28 @@ input[type=range]::-webkit-slider-thumb:hover {
   letter-spacing: 0.05em;
   line-height: 1.8;
   margin-bottom: 1.5rem;
+}
+
+.reservation-note {
+  background: var(--surface2);
+  border-left: 2px solid var(--accent-dim);
+  border-radius: 0 2px 2px 0;
+  padding: 12px 14px;
+  margin-bottom: 1.5rem;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.9;
+  letter-spacing: 0.03em;
+}
+
+.reservation-note a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.reservation-note a:hover {
+  color: var(--text);
 }
 
 .inq-field {
