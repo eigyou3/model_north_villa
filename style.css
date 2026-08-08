@@ -178,11 +178,56 @@ body {
   line-height: 2.4;
 }
 
+.hero-cta-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 10px;
+  border: 1px solid var(--accent-dim);
+  border-radius: 4px;
+  background: rgba(19, 26, 18, 0.35);
+  text-decoration: none;
+  transition: background 0.3s, border-color 0.3s;
+  width: 195px;
+  text-align: center;
+}
+
+.hero-cta:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.hero-cta-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.hero-cta-ja {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
 .hero-access-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6rem;
+  margin-top: 1.5rem;
   padding: 10px 24px;
   border: 1px solid var(--accent-dim);
   border-radius: 50px;
@@ -633,98 +678,6 @@ footer {
 /* ================================================
    2. ページ固有スタイル：ポータル（bessou-gokochi.html）
    ================================================ */
-
-/* ── EXPLORE リンク ── */
-.links-section {
-  padding: 4rem 1.5rem 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.links-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 10px;
-  letter-spacing: 0.4em;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-  display: block;
-}
-
-.links-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.link-card {
-  display: block;
-  padding: 1.8rem 1rem;
-  border: 1px solid var(--border-hover);
-  border-radius: var(--radius);
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s;
-  background: var(--surface);
-}
-
-.link-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent-light);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.link-card:hover {
-  border-color: var(--accent-dim);
-}
-
-.link-card:hover::before {
-  opacity: 1;
-}
-
-.link-card-en {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  color: var(--accent);
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-.link-card-ja {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  color: var(--text);
-  display: block;
-  position: relative;
-  z-index: 1;
-}
-
-.link-card-arrow {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  color: var(--accent-dim);
-  margin-top: 12px;
-  position: relative;
-  z-index: 1;
-  transition: transform 0.3s, color 0.3s;
-}
-
-.link-card:hover .link-card-arrow {
-  transform: translateX(4px);
-  color: var(--accent);
-}
 
 /* ── ギャラリー ── */
 .gallery-section {
