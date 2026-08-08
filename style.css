@@ -179,11 +179,19 @@ body {
 }
 
 .hero-cta-row {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 10px;
   margin-top: 2.5rem;
-  flex-wrap: wrap;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 640px) {
+  .hero-cta-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .hero-cta {
@@ -198,7 +206,6 @@ body {
   background: rgba(19, 26, 18, 0.35);
   text-decoration: none;
   transition: background 0.3s, border-color 0.3s;
-  width: 195px;
   text-align: center;
 }
 
@@ -223,11 +230,18 @@ body {
   white-space: nowrap;
 }
 
+.hero-links-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8rem;
+}
+
 .hero-access-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 1.5rem;
   padding: 10px 24px;
   border: 1px solid var(--accent-dim);
   border-radius: 50px;
